@@ -13,3 +13,8 @@ repos:
         pass_filenames: false
         types: [go]
         language: system
+      - id: go-test
+        name: Go test
+        entry: just test
+        pass_filenames: false
+        language: system
