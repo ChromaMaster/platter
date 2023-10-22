@@ -24,7 +24,7 @@ func TestDish_AddIngredient(t *testing.T) {
 	assert := assertpkg.New(t)
 	t.Run("should add the given ingredient to the dish", func(t *testing.T) {
 		dish := cooking.NewDish("test dish")
-		ingredient := &cooking.Ingredient{Name: "test ingredient"}
+		ingredient := cooking.NewIngredient("test ingredient", cooking.IngredientTypeMeatAndEggs)
 
 		err := dish.AddIngredient(ingredient)
 		assert.Nil(err)
@@ -34,7 +34,7 @@ func TestDish_AddIngredient(t *testing.T) {
 
 	t.Run("should not add the same ingredient twice", func(t *testing.T) {
 		dish := cooking.NewDish("test dish")
-		ingredient := &cooking.Ingredient{Name: "test ingredient"}
+		ingredient := cooking.NewIngredient("test ingredient", cooking.IngredientTypeFat)
 
 		err := dish.AddIngredient(ingredient)
 		assert.Nil(err)
