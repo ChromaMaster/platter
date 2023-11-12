@@ -12,3 +12,6 @@ fmt:
 
 tidy:
     go mod tidy
+
+lint *args="":
+    ./tools/lint.sh {{ args }}

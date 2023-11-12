@@ -13,6 +13,12 @@ repos:
         pass_filenames: false
         types: [go]
         language: system
+      - id: go-lint
+        name: Linter (golangci-lint)
+        entry: just lint
+        pass_filenames: true
+        types: [go]
+        language: system
       - id: go-test
         name: Go test
         entry: just test
