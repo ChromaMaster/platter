@@ -7,20 +7,20 @@ repos:
         -   id: trailing-whitespace
   - repo: local
     hooks:
-      - id: go-format
-        name: Go Format
+      - id: format
+        name: Format
         entry: just fmt
         pass_filenames: false
         types: [go]
         language: system
-      - id: go-lint
-        name: Linter (golangci-lint)
+      - id: lint
+        name: Lint
         entry: just lint
         pass_filenames: true
         types: [go]
         language: system
-      - id: go-test
-        name: Go test
+      - id: test
+        name: Test
         entry: just test
         pass_filenames: false
         language: system
