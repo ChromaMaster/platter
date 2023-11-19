@@ -16,8 +16,7 @@ repos:
       - id: lint
         name: Lint
         entry: just lint
-        pass_filenames: true
-        types: [go]
+        pass_filenames: false
         language: system
       - id: test
         name: Test
