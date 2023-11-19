@@ -5,8 +5,12 @@ import (
 	"platter/internal/model"
 )
 
-var ErrAlreadyExists = fmt.Errorf("already exists")
+var (
+	ErrAlreadyExists = fmt.Errorf("already exists")
+	ErrNotExists     = fmt.Errorf("not exists")
+)
 
 type Repository[T model.Model] interface {
 	Create(model *T) error
+	Remove(ID int) error
 }
