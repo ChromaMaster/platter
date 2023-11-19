@@ -43,3 +43,33 @@ func TestInMemIngredientRepo_Create(t *testing.T) {
 		assert.ErrorIs(err, repository.ErrAlreadyExists)
 	})
 }
+
+func TestInMemIngredientRepo_Remove(t *testing.T) {
+	assert := assertpkg.New(t)
+
+	t.Run("should't remove an ingredient if it does not exist", func(t *testing.T) {
+		repo := repository.NewInMemIngredientRepository()
+
+		err := repo.Remove(1)
+		assert.ErrorIs(err, repository.ErrNotExists)
+	})
+
+	t.Run("should't remove an ingredient if it does not exist", func(t *testing.T) {
+		repo := repository.NewInMemIngredientRepository()
+		ingredient := model.NewIngredient(0, "test ingredient")
+
+		err := repo.Create(ingredient)
+		assert.Nil(err)
+
+		ingredients, err := repo.GetIngredients()
+		assert.Nil(err)
+		assert.Contains(ingredients, ingredient)
+
+		err = repo.Remove(ingredient.GetID())
+		assert.Nil(err)
+
+		ingredients, err = repo.GetIngredients()
+		assert.Nil(err)
+		assert.NotContains(ingredients, ingredient)
+	})
+}

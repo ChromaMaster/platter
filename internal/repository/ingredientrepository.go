@@ -24,6 +24,16 @@ func (i *InMemIngredientRepository) Create(ingredient *model.Ingredient) error {
 	return nil
 }
 
+func (i *InMemIngredientRepository) Remove(ID int) error {
+	if !i.contains(&model.Ingredient{ID: ID}) {
+		return ErrNotExists
+	}
+
+	i.removeIngredientByID(ID)
+
+	return nil
+}
+
 func (i *InMemIngredientRepository) GetIngredients() ([]*model.Ingredient, error) {
 	return i.ingredients, nil
 }
@@ -36,4 +46,12 @@ func (i *InMemIngredientRepository) contains(ingredient *model.Ingredient) bool 
 	}
 
 	return false
+}
+
+func (i *InMemIngredientRepository) removeIngredientByID(ID int) {
+	for index, ing := range i.ingredients {
+		if ing.GetID() == ID {
+			i.ingredients = append(i.ingredients[:index], i.ingredients[index+1:]...)
+		}
+	}
 }
