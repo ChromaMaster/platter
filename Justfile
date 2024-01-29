@@ -9,7 +9,14 @@ run CMD="platter":
     go run ./cmd/{{ CMD }}/main.go
 
 # Run tests
-test:
+test: test-unit test-int
+
+# Run unit tests
+test-unit:
+    go test -short -failfast -shuffle on -parallel $(nproc) -cover -coverprofile {{cover-file}} ./...
+
+# Run integration tests
+test-int:
     go test -failfast -shuffle on -parallel $(nproc) -cover -coverprofile {{cover-file}} ./...
 
 # Show coverage information in HTML format
