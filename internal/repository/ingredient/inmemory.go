@@ -1,10 +1,9 @@
-package repository
+package ingredient
 
-import "platter/internal/model"
-
-type IngredientRepository interface {
-	Repository[model.Ingredient]
-}
+import (
+	"platter/internal/model"
+	"platter/internal/repository"
+)
 
 type InMemIngredientRepository struct {
 	ingredients []*model.Ingredient
@@ -16,7 +15,7 @@ func NewInMemIngredientRepository() *InMemIngredientRepository {
 
 func (i *InMemIngredientRepository) Create(ingredient *model.Ingredient) error {
 	if i.contains(ingredient) {
-		return ErrAlreadyExists
+		return repository.ErrAlreadyExists
 	}
 
 	i.ingredients = append(i.ingredients, ingredient)
@@ -24,18 +23,18 @@ func (i *InMemIngredientRepository) Create(ingredient *model.Ingredient) error {
 	return nil
 }
 
+func (i *InMemIngredientRepository) GetAll() ([]*model.Ingredient, error) {
+	return i.ingredients, nil
+}
+
 func (i *InMemIngredientRepository) Remove(ID int) error {
 	if !i.contains(&model.Ingredient{ID: ID}) {
-		return ErrNotExists
+		return repository.ErrNotExists
 	}
 
 	i.removeIngredientByID(ID)
 
 	return nil
-}
-
-func (i *InMemIngredientRepository) GetIngredients() ([]*model.Ingredient, error) {
-	return i.ingredients, nil
 }
 
 func (i *InMemIngredientRepository) contains(ingredient *model.Ingredient) bool {
