@@ -31,6 +31,10 @@ fmt:
 tidy:
     go mod tidy
 
+# Upgrade all dependencies
+upgrade:
+    go get -u ./...
+
 # Run the linter (golangci-lint)
 lint *args="":
     ./tools/lint.sh {{ args }}
