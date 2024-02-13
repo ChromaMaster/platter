@@ -17,9 +17,8 @@ type Ingredient struct {
 	Name string
 }
 
-func NewIngredient(ID int, name string) *Ingredient {
+func NewIngredient(name string) *Ingredient {
 	return &Ingredient{
-		ID:   ID,
 		Name: name,
 	}
 }

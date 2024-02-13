@@ -11,7 +11,7 @@ import (
 
 func main() {
 	ingredientsRepository := ingredient.NewInMemIngredientRepository()
-	if err := ingredientsRepository.Create(model.NewIngredient(0, "Foo")); err != nil {
+	if err := ingredientsRepository.Create(model.NewIngredient("Foo")); err != nil {
 		panic(err)
 	}
 

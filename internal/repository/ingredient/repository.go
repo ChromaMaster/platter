@@ -11,15 +11,35 @@ type Repository interface {
 	repository.Repository[model.Ingredient]
 }
 
+type InDBIngredientRepository struct {
+	db *sql.DB
+}
+
 func NewInDBIngredientRepository(db *sql.DB) *InDBIngredientRepository {
 	return &InDBIngredientRepository{
 		db: db,
 	}
 }
 
-func (i InDBIngredientRepository) Create(model *model.Ingredient) error {
-	//TODO implement me
-	panic("implement me")
+func (i InDBIngredientRepository) Create(ingredient *model.Ingredient) error {
+	q := `INSERT INTO ingredients (name) VALUES (?)`
+	stmt, err := i.db.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("could not prepare the insert query: %w", err)
+	}
+
+	defer func(stmt *sql.Stmt) { _ = stmt.Close() }(stmt)
+
+	r, err := stmt.Exec(ingredient.Name)
+	if err != nil {
+		return fmt.Errorf("could not execute the insert query: %w", err)
+	}
+
+	if num, err := r.RowsAffected(); err != nil || num != 1 {
+		return fmt.Errorf("non-effective insert: %w", err)
+	}
+
+	return nil
 }
 
 func (i InDBIngredientRepository) GetAll() ([]*model.Ingredient, error) {
@@ -49,8 +69,4 @@ func (i InDBIngredientRepository) GetAll() ([]*model.Ingredient, error) {
 func (i InDBIngredientRepository) Remove(ID int) error {
 	//TODO implement me
 	panic("implement me")
-}
-
-type InDBIngredientRepository struct {
-	db *sql.DB
 }

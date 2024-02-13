@@ -18,6 +18,8 @@ func (i *InMemIngredientRepository) Create(ingredient *model.Ingredient) error {
 		return repository.ErrAlreadyExists
 	}
 
+	ingredient.ID = len(i.ingredients) + 1
+
 	i.ingredients = append(i.ingredients, ingredient)
 
 	return nil
