@@ -67,6 +67,21 @@ func (i InDBIngredientRepository) GetAll() ([]*model.Ingredient, error) {
 }
 
 func (i InDBIngredientRepository) Remove(ID int) error {
-	//TODO implement me
-	panic("implement me")
+	q := `DELETE FROM ingredients WHERE id = ?`
+	stmt, err := i.db.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("could not prepare the delete query %w", err)
+	}
+
+	defer func(stmt *sql.Stmt) { _ = stmt.Close() }(stmt)
+
+	r, err := stmt.Exec(ID)
+	if err != nil {
+		return fmt.Errorf("could not exevure the delete query %w", err)
+	}
+	if i, err := r.RowsAffected(); err != nil || i != 1 {
+		return fmt.Errorf("delete query failed %w", err)
+	}
+
+	return nil
 }

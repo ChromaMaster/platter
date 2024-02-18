@@ -14,7 +14,7 @@ import (
 
 const testDbName = "test.sqlite3"
 
-var expectedIngredients = []*model.Ingredient{
+var defaultIngredients = []*model.Ingredient{
 	{ID: 1, Name: "Ingredient 1"},
 	{ID: 2, Name: "Ingredient 2"},
 	{ID: 3, Name: "Ingredient 3"},
@@ -52,7 +52,7 @@ func DBSetup(db *sql.DB) error {
 
 	defer func(stmt *sql.Stmt) { _ = stmt.Close() }(stmt)
 
-	for _, i := range expectedIngredients {
+	for _, i := range defaultIngredients {
 		r, err := stmt.Exec(i.Name)
 		if err != nil {
 			return fmt.Errorf("cound not insert data: %w", err)
@@ -154,7 +154,7 @@ func TestInDBIngredientRepo_GetAll(t *testing.T) {
 		ingredients, err := repo.GetAll()
 		assert.NoError(err)
 
-		assert.Equal(expectedIngredients, ingredients)
+		assert.Equal(defaultIngredients, ingredients)
 	})
 }
 
@@ -182,5 +182,32 @@ func TestInDBIngredientRepo_Create(t *testing.T) {
 		assert.NoError(err)
 
 		assert.Contains(ingredients, i)
+	})
+}
+
+func TestInDBIngredientRepo_Remove(t *testing.T) {
+	test.SkipIntegration(t)
+
+	assert := assertpkg.New(t)
+
+	t.Run("should remote the given ingredient from the database", func(t *testing.T) {
+		BeforeEach(t)
+		defer AfterEach(t)
+
+		db, err := openDB()
+		assert.NoError(err)
+
+		defer func(db *sql.DB) { _ = closeDB(db) }(db)
+
+		repo := ingredient.NewInDBIngredientRepository(db)
+
+		err = repo.Remove(3)
+		assert.NoError(err)
+
+		ingredients, err := repo.GetAll()
+		assert.NoError(err)
+
+		expectedIngredients := defaultIngredients[0 : len(defaultIngredients)-1]
+		assert.Equal(expectedIngredients, ingredients)
 	})
 }
