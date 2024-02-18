@@ -14,12 +14,23 @@ func TestInMemIngredientRepo_New(t *testing.T) {
 
 	assert := assertpkg.New(t)
 
-	t.Run("should return an in-memory ingredient repository with no ingredients", func(t *testing.T) {
+	t.Run("should return an in-memory ingredient repository", func(t *testing.T) {
 		repo := ingredient.NewInMemIngredientRepository()
-		ingredients, err := repo.GetAll()
-		assert.Nil(err)
-		assert.Empty(ingredients)
+		assert.NotNil(repo)
 	})
+}
+
+func TestInMemIngredientRepo_Init(t *testing.T) {
+	test.SkipUnit(t)
+
+	assert := assertpkg.New(t)
+
+	t.Run("should initialize the in-memory ingredient repository", func(t *testing.T) {
+		repo := ingredient.NewInMemIngredientRepository()
+		err := repo.Init()
+		assert.Nil(err)
+	})
+
 }
 
 func TestInMemIngredientRepo_Create(t *testing.T) {

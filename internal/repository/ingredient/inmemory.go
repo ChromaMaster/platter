@@ -13,6 +13,12 @@ func NewInMemIngredientRepository() *InMemIngredientRepository {
 	return &InMemIngredientRepository{}
 }
 
+func (i *InMemIngredientRepository) Init() error {
+	i.ingredients = make([]*model.Ingredient, 0)
+
+	return nil
+}
+
 func (i *InMemIngredientRepository) Create(ingredient *model.Ingredient) error {
 	if i.contains(ingredient) {
 		return repository.ErrAlreadyExists

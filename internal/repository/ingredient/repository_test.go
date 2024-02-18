@@ -129,7 +129,7 @@ func TestInDBIngredientRepo_New(t *testing.T) {
 
 	assert := assertpkg.New(t)
 
-	t.Run("should return a DB ingredient repository with no ingredients", func(t *testing.T) {
+	t.Run("should return a DB ingredient repository", func(t *testing.T) {
 		repo := ingredient.NewInDBIngredientRepository(nil)
 		assert.NotNil(repo)
 	})
