@@ -11,6 +11,8 @@ var (
 )
 
 type Repository[T model.Model] interface {
+	Init() error
+
 	Create(model *T) error
 	GetAll() ([]*T, error)
 	Remove(ID int) error

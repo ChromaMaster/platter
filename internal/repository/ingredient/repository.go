@@ -21,6 +21,19 @@ func NewInDBIngredientRepository(db *sql.DB) *InDBIngredientRepository {
 	}
 }
 
+func (i InDBIngredientRepository) Init() error {
+	q := `CREATE TABLE IF NOT EXISTS ingredients (
+    		id INTEGER PRIMARY KEY AUTOINCREMENT,
+    		name VARCHAR(64) NULL
+		);`
+
+	if _, err := i.db.Exec(q); err != nil {
+		return fmt.Errorf("could not create the table: %w", err)
+	}
+
+	return nil
+}
+
 func (i InDBIngredientRepository) Create(ingredient *model.Ingredient) error {
 	q := `INSERT INTO ingredients (name) VALUES (?)`
 	stmt, err := i.db.Prepare(q)

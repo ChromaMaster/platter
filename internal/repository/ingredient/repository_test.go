@@ -135,6 +135,34 @@ func TestInDBIngredientRepo_New(t *testing.T) {
 	})
 }
 
+func TestInDBIngredientRepository_Init(t *testing.T) {
+	test.SkipIntegration(t)
+
+	assert := assertpkg.New(t)
+
+	t.Run("should create the ingredients table in the database", func(t *testing.T) {
+		db, err := openDB()
+		assert.NoError(err)
+
+		defer func(db *sql.DB) { _ = closeDB(db) }(db)
+
+		repo := ingredient.NewInDBIngredientRepository(db)
+		err = repo.Init()
+		assert.NoError(err)
+
+		q := `SELECT name FROM sqlite_master WHERE type='table' AND name='ingredients';`
+		rows, err := db.Query(q)
+		assert.NoError(err)
+
+		count := 0
+		for rows.Next() {
+			count++
+		}
+
+		assert.Equal(1, count)
+	})
+}
+
 func TestInDBIngredientRepo_GetAll(t *testing.T) {
 	test.SkipIntegration(t)
 
