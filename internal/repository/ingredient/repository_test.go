@@ -15,9 +15,9 @@ import (
 const testDbName = "test.sqlite3"
 
 var defaultIngredients = []*model.Ingredient{
-	{ID: 1, Name: "Ingredient 1"},
-	{ID: 2, Name: "Ingredient 2"},
-	{ID: 3, Name: "Ingredient 3"},
+	model.NewIngredient(1, "Ingredient 1"),
+	model.NewIngredient(2, "Ingredient 2"),
+	model.NewIngredient(3, "Ingredient 3"),
 }
 
 func openDB() (*sql.DB, error) {

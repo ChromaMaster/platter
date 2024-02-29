@@ -40,7 +40,7 @@ func TestInMemIngredientRepo_Create(t *testing.T) {
 
 	t.Run("should add the given ingredient to the repository", func(t *testing.T) {
 		repo := ingredient.NewInMemIngredientRepository()
-		i := model.NewIngredient("test ingredient")
+		i := model.NewIngredient(1, "test ingredient")
 
 		err := repo.Create(i)
 		assert.Nil(err)
@@ -53,7 +53,7 @@ func TestInMemIngredientRepo_Create(t *testing.T) {
 
 	t.Run("shouldn't add the same ingredient twice", func(t *testing.T) {
 		repo := ingredient.NewInMemIngredientRepository()
-		i := model.NewIngredient("test ingredient")
+		i := model.NewIngredient(1, "test ingredient")
 
 		err := repo.Create(i)
 		assert.Nil(err)
@@ -77,7 +77,7 @@ func TestInMemIngredientRepo_Remove(t *testing.T) {
 
 	t.Run("should remove an ingredient if it does exist", func(t *testing.T) {
 		repo := ingredient.NewInMemIngredientRepository()
-		i := model.NewIngredient("test ingredient")
+		i := model.NewIngredient(1, "test ingredient")
 
 		err := repo.Create(i)
 		assert.Nil(err)

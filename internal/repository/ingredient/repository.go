@@ -67,7 +67,7 @@ func (i InDBRepository) GetAll() ([]*model.Ingredient, error) {
 	ingredients := make([]*model.Ingredient, 0)
 
 	for rows.Next() {
-		i := &model.Ingredient{}
+		i := model.NewIngredient(0, "")
 
 		if err := rows.Scan(&i.ID, &i.Name); err != nil {
 			return nil, fmt.Errorf("could not get the ingredient value: %w", err)
@@ -90,7 +90,7 @@ func (i InDBRepository) Remove(ID int) error {
 
 	r, err := stmt.Exec(ID)
 	if err != nil {
-		return fmt.Errorf("could not exevure the delete query %w", err)
+		return fmt.Errorf("could not execure the delete query %w", err)
 	}
 	if i, err := r.RowsAffected(); err != nil || i != 1 {
 		return fmt.Errorf("delete query failed %w", err)
