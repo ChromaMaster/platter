@@ -3,7 +3,7 @@
 command -v podman >/dev/null 2>&1 || { echo "Podman is not installed. Aborting." >&2; exit 1; }
 
 IMAGE="docker.io/golangci/golangci-lint"
-IMAGE_VERSION="v1.50.1"
+IMAGE_VERSION="v1.56.2"
 
 LINTER_ARGS="--fix"
 
