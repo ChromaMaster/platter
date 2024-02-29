@@ -5,21 +5,21 @@ import (
 	"platter/internal/repository"
 )
 
-type InMemIngredientRepository struct {
+type InMemRepository struct {
 	ingredients []*model.Ingredient
 }
 
-func NewInMemIngredientRepository() *InMemIngredientRepository {
-	return &InMemIngredientRepository{}
+func NewInMemIngredientRepository() *InMemRepository {
+	return &InMemRepository{}
 }
 
-func (i *InMemIngredientRepository) Init() error {
+func (i *InMemRepository) Init() error {
 	i.ingredients = make([]*model.Ingredient, 0)
 
 	return nil
 }
 
-func (i *InMemIngredientRepository) Create(ingredient *model.Ingredient) error {
+func (i *InMemRepository) Create(ingredient *model.Ingredient) error {
 	if i.contains(ingredient) {
 		return repository.ErrAlreadyExists
 	}
@@ -31,11 +31,11 @@ func (i *InMemIngredientRepository) Create(ingredient *model.Ingredient) error {
 	return nil
 }
 
-func (i *InMemIngredientRepository) GetAll() ([]*model.Ingredient, error) {
+func (i *InMemRepository) GetAll() ([]*model.Ingredient, error) {
 	return i.ingredients, nil
 }
 
-func (i *InMemIngredientRepository) Remove(ID int) error {
+func (i *InMemRepository) Remove(ID int) error {
 	if !i.contains(&model.Ingredient{ID: ID}) {
 		return repository.ErrNotExists
 	}
@@ -45,7 +45,7 @@ func (i *InMemIngredientRepository) Remove(ID int) error {
 	return nil
 }
 
-func (i *InMemIngredientRepository) contains(ingredient *model.Ingredient) bool {
+func (i *InMemRepository) contains(ingredient *model.Ingredient) bool {
 	for _, i := range i.ingredients {
 		if i.GetID() == ingredient.GetID() {
 			return true
@@ -55,7 +55,7 @@ func (i *InMemIngredientRepository) contains(ingredient *model.Ingredient) bool 
 	return false
 }
 
-func (i *InMemIngredientRepository) removeIngredientByID(ID int) {
+func (i *InMemRepository) removeIngredientByID(ID int) {
 	for index, ing := range i.ingredients {
 		if ing.GetID() == ID {
 			i.ingredients = append(i.ingredients[:index], i.ingredients[index+1:]...)

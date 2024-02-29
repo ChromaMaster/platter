@@ -20,7 +20,7 @@ func main() {
 
 	defer func(db *sql.DB) { _ = closeDB(db) }(db)
 
-	ingredientsRepository := ingredient.NewInDBIngredientRepository(db)
+	ingredientsRepository := ingredient.NewInDBRepository(db)
 
 	if err := ingredientsRepository.Init(); err != nil {
 		panic(err)

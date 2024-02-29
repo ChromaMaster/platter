@@ -11,17 +11,17 @@ type Repository interface {
 	repository.Repository[model.Ingredient]
 }
 
-type InDBIngredientRepository struct {
+type InDBRepository struct {
 	db *sql.DB
 }
 
-func NewInDBIngredientRepository(db *sql.DB) *InDBIngredientRepository {
-	return &InDBIngredientRepository{
+func NewInDBRepository(db *sql.DB) *InDBRepository {
+	return &InDBRepository{
 		db: db,
 	}
 }
 
-func (i InDBIngredientRepository) Init() error {
+func (i InDBRepository) Init() error {
 	q := `CREATE TABLE IF NOT EXISTS ingredients (
     		id INTEGER PRIMARY KEY AUTOINCREMENT,
     		name VARCHAR(64) NULL
@@ -34,7 +34,7 @@ func (i InDBIngredientRepository) Init() error {
 	return nil
 }
 
-func (i InDBIngredientRepository) Create(ingredient *model.Ingredient) error {
+func (i InDBRepository) Create(ingredient *model.Ingredient) error {
 	q := `INSERT INTO ingredients (name) VALUES (?)`
 	stmt, err := i.db.Prepare(q)
 	if err != nil {
@@ -55,7 +55,7 @@ func (i InDBIngredientRepository) Create(ingredient *model.Ingredient) error {
 	return nil
 }
 
-func (i InDBIngredientRepository) GetAll() ([]*model.Ingredient, error) {
+func (i InDBRepository) GetAll() ([]*model.Ingredient, error) {
 	q := `SELECT id, name FROM ingredients`
 	rows, err := i.db.Query(q)
 	if err != nil {
@@ -79,7 +79,7 @@ func (i InDBIngredientRepository) GetAll() ([]*model.Ingredient, error) {
 	return ingredients, nil
 }
 
-func (i InDBIngredientRepository) Remove(ID int) error {
+func (i InDBRepository) Remove(ID int) error {
 	q := `DELETE FROM ingredients WHERE id = ?`
 	stmt, err := i.db.Prepare(q)
 	if err != nil {

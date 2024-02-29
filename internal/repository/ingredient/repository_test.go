@@ -130,7 +130,7 @@ func TestInDBIngredientRepo_New(t *testing.T) {
 	assert := assertpkg.New(t)
 
 	t.Run("should return a DB ingredient repository", func(t *testing.T) {
-		repo := ingredient.NewInDBIngredientRepository(nil)
+		repo := ingredient.NewInDBRepository(nil)
 		assert.NotNil(repo)
 	})
 }
@@ -146,7 +146,7 @@ func TestInDBIngredientRepository_Init(t *testing.T) {
 
 		defer func(db *sql.DB) { _ = closeDB(db) }(db)
 
-		repo := ingredient.NewInDBIngredientRepository(db)
+		repo := ingredient.NewInDBRepository(db)
 		err = repo.Init()
 		assert.NoError(err)
 
@@ -177,7 +177,7 @@ func TestInDBIngredientRepo_GetAll(t *testing.T) {
 
 		defer func(db *sql.DB) { _ = closeDB(db) }(db)
 
-		repo := ingredient.NewInDBIngredientRepository(db)
+		repo := ingredient.NewInDBRepository(db)
 
 		ingredients, err := repo.GetAll()
 		assert.NoError(err)
@@ -200,7 +200,7 @@ func TestInDBIngredientRepo_Create(t *testing.T) {
 
 		defer func(db *sql.DB) { _ = closeDB(db) }(db)
 
-		repo := ingredient.NewInDBIngredientRepository(db)
+		repo := ingredient.NewInDBRepository(db)
 
 		i := &model.Ingredient{ID: 4, Name: "Ingredient 4"}
 		err = repo.Create(i)
@@ -227,7 +227,7 @@ func TestInDBIngredientRepo_Remove(t *testing.T) {
 
 		defer func(db *sql.DB) { _ = closeDB(db) }(db)
 
-		repo := ingredient.NewInDBIngredientRepository(db)
+		repo := ingredient.NewInDBRepository(db)
 
 		err = repo.Remove(3)
 		assert.NoError(err)
