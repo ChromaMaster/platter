@@ -33,8 +33,8 @@ func main() {
 				Usage: "manage ingredients",
 				Subcommands: []*cli.Command{
 					{
-						Name:  "show",
-						Usage: "show all the ingredients",
+						Name:  "list",
+						Usage: "list all the ingredients",
 						Action: func(ctx *cli.Context) error {
 							fmt.Println("Listing all ingredients...")
 							ingredients, err := ingredientsRepository.GetAll()
@@ -61,7 +61,7 @@ func main() {
 							fmt.Println("Adding the ingredient...")
 							name := ctx.Args().First()
 
-							if err := ingredientsRepository.Create(&model.Ingredient{Name: name}); err != nil {
+							if err := ingredientsRepository.Create(model.NewIngredient(0, name)); err != nil {
 								return fmt.Errorf("cannot add the ingredient: %w", err)
 							}
 
