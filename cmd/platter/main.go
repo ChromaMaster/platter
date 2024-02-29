@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"platter/internal/model"
+	"platter/internal/repository/dish"
 	"platter/internal/repository/ingredient"
 )
 
@@ -21,8 +22,12 @@ func main() {
 	defer func(db *sql.DB) { _ = closeDB(db) }(db)
 
 	ingredientsRepository := ingredient.NewInDBRepository(db)
+	dishesRepository := dish.NewInDBRepository(db)
 
 	if err := ingredientsRepository.Init(); err != nil {
+		panic(err)
+	}
+	if err := dishesRepository.Init(); err != nil {
 		panic(err)
 	}
 
@@ -63,6 +68,48 @@ func main() {
 
 							if err := ingredientsRepository.Create(model.NewIngredient(0, name)); err != nil {
 								return fmt.Errorf("cannot add the ingredient: %w", err)
+							}
+
+							return nil
+						},
+					},
+				},
+			},
+			{
+				Name:  "dish",
+				Usage: "manage dishes",
+				Subcommands: []*cli.Command{
+					{
+						Name:  "list",
+						Usage: "list all the dishes",
+						Action: func(ctx *cli.Context) error {
+							fmt.Println("Listing all dishes...")
+							dishes, err := dishesRepository.GetAll()
+							if err != nil {
+								panic(err)
+							}
+
+							for _, d := range dishes {
+								fmt.Printf("%d - %s\n", d.ID, d.Name)
+							}
+
+							return nil
+						},
+					},
+					{
+						Name:      "create",
+						Usage:     "add a dish",
+						ArgsUsage: "dishName",
+						Action: func(ctx *cli.Context) error {
+							if ctx.NArg() == 0 {
+								return fmt.Errorf("missing dish name")
+							}
+
+							fmt.Println("Adding the dish...")
+							name := ctx.Args().First()
+
+							if err := dishesRepository.Create(model.NewDish(0, name)); err != nil {
+								return fmt.Errorf("cannot add the dish: %w", err)
 							}
 
 							return nil
