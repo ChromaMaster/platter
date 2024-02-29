@@ -75,7 +75,7 @@ func TestInMemIngredientRepo_Remove(t *testing.T) {
 		assert.ErrorIs(err, repository.ErrNotExists)
 	})
 
-	t.Run("shouldn't remove an ingredient if it does not exist", func(t *testing.T) {
+	t.Run("should remove an ingredient if it does exist", func(t *testing.T) {
 		repo := ingredient.NewInMemIngredientRepository()
 		i := model.NewIngredient("test ingredient")
 
